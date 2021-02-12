@@ -2,7 +2,7 @@
 Node.js backend for Kvantorium Web
 
 ## Error codes
-```SUCCESS``` - success request
+* ```SUCCESS``` - success request
 * ```ERROR_EMPTY_FIELD``` - some fields are empty.
 * ```ERROR_BAD_LENGTH``` - some data has length above or below the validator
   * Login: 3 - 30
