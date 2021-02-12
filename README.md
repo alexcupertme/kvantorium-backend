@@ -2,7 +2,7 @@
 Node.js backend for Kvantorium Web
 
 ## API requests
-
+### Registration
 * ```/reg``` - registration
 Request:
 ```
@@ -17,6 +17,7 @@ Respond:
 ```
 { success: %ERROR CODE% }
 ```
+### Authorization
 * ```/auth``` - authorization
 Request:
 ```
@@ -36,6 +37,7 @@ Respond:
     success: %ERROR_CODE%,
 } // UNSUCCESSFUL RESPONSE
 ```
+### Token authorization
 * ```/start_session``` - start session (authorization middle request)
 Request:
 ```
