@@ -7,10 +7,10 @@ Node.js backend for Kvantorium Web
 
 Request                                 | Response
 --------------------------------------- | --------------------------------------
-Request:                                |
-```                                     |
-{ login:                                |
-    req.body.login,                     |
+Request:                         
+```                                    
+{ login:                               
+    req.body.login,                    
     name: req.body.name, 
     mail: req.body.mail, 
     password: req.body.password 
