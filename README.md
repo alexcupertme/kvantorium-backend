@@ -4,6 +4,7 @@ Node.js backend for Kvantorium Web
 ## API requests
 ### Registration
 * ```/reg``` - registration
+
 Request:
 ```
 {
@@ -19,6 +20,7 @@ Respond:
 ```
 ### Authorization
 * ```/auth``` - authorization
+
 Request:
 ```
 {
@@ -39,6 +41,7 @@ Respond:
 ```
 ### Token authorization
 * ```/start_session``` - start session (authorization middle request)
+
 Request:
 ```
 {
