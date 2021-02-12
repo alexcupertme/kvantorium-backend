@@ -1,6 +1,52 @@
 # KvantoriumWeb backend
 Node.js backend for Kvantorium Web
 
+## API requests
+
+* ```/reg``` - registration
+Request:
+```
+{
+    login: req.body.login,
+    name: req.body.name,
+    mail: req.body.mail,
+    password: req.body.password,
+}
+```
+Respond:
+```
+{ success: %ERROR CODE% }
+```
+* ```/auth``` - authorization
+Request:
+```
+{
+    login: req.body.login,
+    password: req.body.password,
+}
+```
+Respond:
+```
+{
+    success: "SUCCESS",
+    token: token,
+} // SUCCESSFUL RESPOND
+
+{
+    success: %ERROR_CODE%,
+} // UNSUCCESSFUL RESPONSE
+```
+* ```/start_session``` - start session (authorization middle request)
+Request:
+```
+{
+    token: token
+}
+```
+Respond:
+```
+{ success: %ERROR CODE% }
+```
 ## Error codes
 * ```SUCCESS``` - success request
 * ```ERROR_EMPTY_FIELD``` - some fields are empty.
