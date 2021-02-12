@@ -4,7 +4,7 @@ Node.js backend for Kvantorium Web
 ## API requests
 ### Registration
 * ```/reg``` - registration
-
+------------ | -------------
 Request:
 ```
 {
@@ -14,6 +14,7 @@ Request:
     password: req.body.password,
 }
 ```
+|
 Respond:
 ```
 { success: %ERROR CODE% }
