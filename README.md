@@ -5,11 +5,16 @@ Node.js backend for Kvantorium Web
 ### Registration
 * ```/reg``` - registration
 
-Validator                               | Description
+Request                                 | Response
 --------------------------------------- | --------------------------------------
-Request:
-```
-{ login: req.body.login, name: req.body.name, mail: req.body.mail, password: req.body.password }
+Request:                                |
+```                                     |
+{ login:                                |
+    req.body.login,                     |
+    name: req.body.name, 
+    mail: req.body.mail, 
+    password: req.body.password 
+}
 ```
 |
 Respond:
