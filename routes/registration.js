@@ -25,15 +25,36 @@ let checkDataRegister = function (login, name, mail, password) {
 };
 
 router.post("/", (req, res) => {
+  let date = new Date();
   let user = new User({
-    login: req.body.login,
-    name: req.body.name,
     mail: req.body.mail,
+    login: req.body.login,
     password: req.body.password,
+    name: {
+      first: req.body.name,
+      second: "",
+    },
+    description: "",
+    skills: [
+      {
+        id: "",
+        name: "",
+        description: "",
+      },
+    ],
+    achievements: [{ name: "" }],
+    kvantums: [
+      {
+        kvantum: "",
+        level: "",
+      },
+    ],
+    registerDate: date,
+    role: "user",
   });
   let checkRes = checkDataRegister(
     user.login,
-    user.name,
+    user.name.first,
     user.mail,
     user.password
   );
@@ -47,18 +68,18 @@ router.post("/", (req, res) => {
             User.addUser(user, (err, user) => {
               if (err) {
                 console.log(err);
-                return res.json({ success: "ERROR_USER_NOT_ADDED" });
+                return res.json({ exitCode: "ERROR_USER_NOT_ADDED" });
               } else {
                 return res.json({
-                  success: checkRes,
+                  exitCode: checkRes,
                 });
               }
             });
-          } else return res.json({ success: "ERROR_MAIL_HAS_REGISTERED" });
+          } else return res.json({ exitCode: "ERROR_MAIL_HAS_REGISTERED" });
         });
-      } else return res.json({ success: "ERROR_USER_ALREADY_EXISTS" });
+      } else return res.json({ exitCode: "ERROR_USER_ALREADY_EXISTS" });
     });
-  }
+  } else return res.json({ exitCode: checkRes });
 });
 
 router.get("/", (req, res) => {

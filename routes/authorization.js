@@ -23,7 +23,7 @@ router.post("/", (req, res) => {
     if (err) throw err;
     if (!userlogin)
       return res.json({
-        success: "ERR_USER_NOT_FOUND",
+        exitCode: "ERR_USER_NOT_FOUND",
       });
     User.comparePass(user.password, userlogin.password, (err, isMatch) => {
       if (err) throw err;
@@ -36,12 +36,12 @@ router.post("/", (req, res) => {
           config.secret
         );
         return res.json({
-          success: "SUCCESS",
+          exitCode: "SUCCESS",
           token: token,
         });
       } else
         return res.json({
-          success: "ERR_INCORRECT_PASSWORD",
+          exitCode: "ERR_INCORRECT_PASSWORD",
         });
     });
   });

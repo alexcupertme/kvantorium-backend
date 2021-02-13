@@ -2,22 +2,40 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const UserSchema = mongoose.Schema({
+  name: String,
+  mail: String,
+  login: String,
+  password: String,
   name: {
-    type: String,
-    required: true,
+    first: String,
+    second: String,
   },
-  mail: {
-    type: String,
-    required: true,
-  },
-  login: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
+  description: String,
+  skills: [
+    {
+      id: Number,
+      name: String,
+      description: String,
+    },
+  ],
+  achievements: [{ name: String }],
+  kvantums: [
+    {
+      kvantum: String,
+      level: String,
+    },
+  ],
+  registerMinute: Number,
+  registerHour: Number,
+  registerDate: Number,
+  registerMonth: Number,
+  registerYear: Number,
+  role: String, // Available roles:
+  // Moderator
+  // Teacher
+  // Verified user
+  // User
+  // Banned
 });
 
 const User = (module.exports = mongoose.model("User", UserSchema));
