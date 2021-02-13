@@ -16,7 +16,7 @@ Request:
 ```
 Respond:
 ```
-{ success: %ERROR CODE% }
+{ exitCode: %ERROR CODE% }
 ```
 ### Authorization
 * ```/auth``` - authorization
@@ -31,12 +31,12 @@ Request:
 Respond:
 ```
 {
-    success: "SUCCESS",
+    exitCode: "SUCCESS",
     token: token,
 } // SUCCESSFUL RESPOND
 
 {
-    success: %ERROR_CODE%,
+    exitCode: %ERROR_CODE%,
 } // UNSUCCESSFUL RESPONSE
 ```
 ### Token authorization
@@ -50,7 +50,7 @@ Request:
 ```
 Respond:
 ```
-{ success: %ERROR CODE% }
+{ exitCode: %ERROR CODE% }
 ```
 ## Error codes
 * ```SUCCESS``` - success request
