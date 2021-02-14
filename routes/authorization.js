@@ -19,32 +19,38 @@ router.post("/", (req, res) => {
     password: req.body.password,
   });
   res.header("Access-Control-Allow-Origin", "*");
-  User.getUserByLogin(user.login, (err, userlogin) => {
-    if (err) throw err;
-    if (!userlogin)
-      return res.json({
-        exitCode: "ERR_USER_NOT_FOUND",
-      });
-    User.comparePass(user.password, userlogin.password, (err, isMatch) => {
+  let checkRes = checkDataLogin(user.login, user.password);
+  if (checkRes === "SUCCESS") {
+    User.getUserByLogin(user.login, (err, userlogin) => {
       if (err) throw err;
-      if (isMatch) {
-        const token = jwt.sign(
-          {
-            exp: Math.floor(Date.now() / 1000) + 60 * 60,
-            data: user.login,
-          },
-          config.secret
-        );
+      if (!userlogin)
         return res.json({
-          exitCode: "SUCCESS",
-          token: token,
+          exitCode: "ERR_USER_NOT_FOUND",
         });
-      } else
-        return res.json({
-          exitCode: "ERR_INCORRECT_PASSWORD",
-        });
+      User.comparePass(user.password, userlogin.password, (err, isMatch) => {
+        if (err) throw err;
+        if (isMatch) {
+          const token = jwt.sign(
+            {
+              exp: Math.floor(Date.now() / 1000) + 60 * 60,
+              data: user.login,
+            },
+            config.secret
+          );
+          return res.json({
+            exitCode: "SUCCESS",
+            token: token,
+          });
+        } else
+          return res.json({
+            exitCode: "ERR_INCORRECT_PASSWORD",
+          });
+      });
     });
-  });
+  } else
+    return res.json({
+      exitCode: checkRes,
+    });
 });
 
 router.get("/", (req, res) => {

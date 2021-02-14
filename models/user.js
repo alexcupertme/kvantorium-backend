@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const UserSchema = mongoose.Schema({
-  name: String,
   mail: String,
   login: String,
   password: String,
@@ -25,17 +24,8 @@ const UserSchema = mongoose.Schema({
       level: String,
     },
   ],
-  registerMinute: Number,
-  registerHour: Number,
   registerDate: Number,
-  registerMonth: Number,
-  registerYear: Number,
-  role: String, // Available roles:
-  // Moderator
-  // Teacher
-  // Verified user
-  // User
-  // Banned
+  role: String,
 });
 
 const User = (module.exports = mongoose.model("User", UserSchema));
@@ -70,4 +60,24 @@ module.exports.comparePass = function (passFromUser, userDBPass, callback) {
     if (err) throw err;
     callback(null, isMatch);
   });
+};
+
+module.exports.changeUserByLogin = function (userdata, username) {
+  var query = { login: username };
+  User.updateOne(
+    query,
+    {
+      mail: userdata.mail,
+      login: userdata.login,
+      name: userdata.name,
+      description: userdata.description,
+      skills: userdata.skills,
+      achievements: userdata.achievements,
+      kvantums: userdata.kvantums,
+    },
+    (err, res) => {
+      if (err) throw err;
+      else return true;
+    }
+  );
 };

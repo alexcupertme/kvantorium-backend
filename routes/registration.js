@@ -3,19 +3,14 @@ const User = require("../models/user");
 const router = express.Router();
 const validator = require("validator");
 
-let checkDataRegister = function (login, name, mail, password) {
+let checkDataRegister = function (login, mail, password) {
   if (
     validator.isEmpty(login) ||
-    validator.isEmpty(name) ||
     validator.isEmpty(mail) ||
     validator.isEmpty(password)
   ) {
     return "ERROR_EMPTY_FIELD";
-  } else if (
-    !(3 <= login.length <= 30) ||
-    !(1 <= name.length <= 50) ||
-    !(1 <= mail.length)
-  ) {
+  } else if (!(3 <= login.length <= 30) || !(1 <= mail.length)) {
     return "ERROR_BAD_LENGTH";
   } else if (!validator.isEmail(mail)) {
     return "ERROR_BAD_EMAIL";
@@ -31,7 +26,7 @@ router.post("/", (req, res) => {
     login: req.body.login,
     password: req.body.password,
     name: {
-      first: req.body.name,
+      first: "",
       second: "",
     },
     description: "",

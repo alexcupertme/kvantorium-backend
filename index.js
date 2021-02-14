@@ -13,6 +13,7 @@ const authorization = require("./routes/authorization");
 const registration = require("./routes/registration");
 const startSession = require("./routes/start_session");
 const config = require("./config/db");
+const apiLimit = require("./models/api_limit");
 
 const PORT = process.env.PORT || 3000;
 var server = require("http").createServer(app);
@@ -20,12 +21,15 @@ var server = require("http").createServer(app);
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
-const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000,
-  max: 30,
-});
-app.use(limiter);
 
+// Limits for API requests;
+app.use("/reg", apiLimit.register);
+app.use("/start_session", apiLimit.register);
+app.use("/auth", apiLimit.auth);
+app.use("/getuserinfo", apiLimit.getUserInfo);
+app.use("/setuserinfo", apiLimit.setUserInfo);
+
+// Database connecting
 mongoose.connect(config.db, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -38,10 +42,14 @@ mongoose.connection.on("error", (err) => {
   console.log(`We cant connect to our database\n${err}`);
 });
 
+// Main route
+
 app.get("/", (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.send("Главная страница сайта!");
 });
+
+// API routes
 
 app.use("/reg", registration);
 app.use("/start_session", startSession);
