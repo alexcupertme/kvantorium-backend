@@ -8,14 +8,13 @@ export default class RegisterHandler {
    * Registers a new user
    */
   public register(callback) {
-    console.log(this.clientData);
     let registerValidator = new RegisterValidator();
     registerValidator.login = this.clientData.login;
     registerValidator.mail = this.clientData.mail;
     registerValidator.password = this.clientData.password;
     registerValidator.validate(registerValidator, (errors) => {
       if (errors)
-        return callback(0, `ERR_INCORRECT_${errors[0].toUpper}`, null);
+        return callback(0, `ERR_INCORRECT_${errors[0].toUpperCase()}`, null);
       else return callback(1, "SUCCESS", null);
     });
   }

@@ -4,6 +4,7 @@ import RegisterController from "../../controllers/RegisterController";
 class RegisterRouter {
   private _router = Router();
   private _controller = RegisterController;
+  private _action = "auth.register";
   public route: string = "/register";
 
   get router() {
@@ -27,6 +28,7 @@ class RegisterRouter {
       (req: Request, res: Response, next: NextFunction) => {
         try {
           this._controller.defaultMethod(req, (result) => {
+            result.action = this._action;
             res.status(200).json(result);
           });
         } catch (error) {

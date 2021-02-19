@@ -16,6 +16,7 @@ export default class Register {
       if (errors.length > 0) {
         let errorArr = [];
         errors.forEach((error) => {
+          console.log(error.property);
           errorArr.push(error.property);
         });
         return callback(errorArr);
