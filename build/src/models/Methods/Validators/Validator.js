@@ -31,6 +31,34 @@ __decorate([
     class_validator_1.Length(1, 50)
 ], Validator.prototype, "mail", void 0);
 __decorate([
+    class_validator_1.IsOptional(),
+    class_validator_1.Length(1, 30)
+], Validator.prototype, "name", void 0);
+__decorate([
+    class_validator_1.IsOptional(),
+    class_validator_1.Length(1, 30)
+], Validator.prototype, "surname", void 0);
+__decorate([
+    class_validator_1.IsOptional(),
+    class_validator_1.Length(1, 5000)
+], Validator.prototype, "description", void 0);
+__decorate([
     class_validator_1.Length(3, 50)
 ], Validator.prototype, "login", void 0);
+__decorate([
+    class_validator_1.Length(1, 10),
+    class_validator_1.IsOptional()
+], Validator.prototype, "kvantumName", void 0);
+__decorate([
+    class_validator_1.IsNumber(),
+    class_validator_1.IsOptional()
+], Validator.prototype, "kvantumLevel", void 0);
+__decorate([
+    class_validator_1.Length(1, 50),
+    class_validator_1.IsOptional()
+], Validator.prototype, "skillName", void 0);
+__decorate([
+    class_validator_1.Length(1, 500),
+    class_validator_1.IsOptional()
+], Validator.prototype, "skillDescription", void 0);
 exports.default = Validator;

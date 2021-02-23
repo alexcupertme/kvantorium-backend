@@ -34,6 +34,7 @@ server.app.use("/api", server.router); // Main route
 
 server.app.use(
   (err: ErrorHandler, req: Request, res: Response, next: NextFunction) => {
+    res.set("Access-Control-Allow-Origin", "http://localhost");
     res.status(err.statusCode || 500).json({
       status: "error",
       statusCode: err.statusCode,

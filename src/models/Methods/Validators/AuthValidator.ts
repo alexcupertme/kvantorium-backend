@@ -1,4 +1,4 @@
-import { Matches, Length, IsEmail, validate } from "class-validator";
+import { Matches, Length, validate } from "class-validator";
 
 export default class Validator {
   @Matches(
@@ -6,15 +6,11 @@ export default class Validator {
   )
   password: string;
 
-  @IsEmail()
-  @Length(1, 50)
-  mail: string;
-
   @Length(3, 50)
   login: string;
 
-  public validate(register: Validator, callback) {
-    validate(register).then((errors) => {
+  public validate(auth: Validator, callback) {
+    validate(auth).then((errors) => {
       if (errors.length > 0) {
         let errorArr = [];
         errors.forEach((error) => {

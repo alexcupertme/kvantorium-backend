@@ -9,6 +9,7 @@ class AuthRouter {
         this._router = express_1.Router();
         this._controller = AuthController_1.default;
         this.route = "/login";
+        this._action = "auth.login";
         this._configure();
     }
     get router() {
@@ -24,6 +25,7 @@ class AuthRouter {
         this._router.post("/", (req, res, next) => {
             try {
                 this._controller.defaultMethod(req, (result) => {
+                    result.action = this._action;
                     res.status(200).json(result);
                 });
             }

@@ -9,6 +9,7 @@ class QueryUserInfoRouter {
         this._router = express_1.Router();
         this._controller = QueryUserInfoController_1.default;
         this.route = "/getuserinfo";
+        this._action = "user.queryUserInfo";
         this._configure();
     }
     get router() {
@@ -24,6 +25,7 @@ class QueryUserInfoRouter {
         this._router.post("/", (req, res, next) => {
             try {
                 this._controller.defaultMethod(req, (result) => {
+                    result.action = this._action;
                     res.status(200).json(result);
                 });
             }

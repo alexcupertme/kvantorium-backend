@@ -4,9 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const UserSchema_1 = __importDefault(require("../../Interfaces/UserSchema"));
 module.exports = function getQueryUserInfo(query, callback) {
+    let validQuery = ["login", "name"];
     let params = {};
-    for (const key in query) {
+    for (const key in validQuery) {
         if (query[key] !== "") {
+            console.log(query[key]);
             params[key] = query[key];
         }
     }

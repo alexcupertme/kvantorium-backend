@@ -21,9 +21,11 @@ interface IQueryOutput {
 }
 
 export = function getQueryUserInfo(query, callback) {
+  let validQuery = ["login", "name"];
   let params: IQuery = {};
-  for (const key in query) {
+  for (const key in validQuery) {
     if (query[key] !== "") {
+      console.log(query[key]);
       params[key] = query[key];
     }
   }

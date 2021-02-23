@@ -1,27 +1,13 @@
-import User from "../models/DatabaseHandler";
+import AuthModel from "../models/RouteModels/AuthModel";
 
 class AuthController {
   constructor() {}
 
   defaultMethod(clientRequest, callback) {
-    User.getUserInfoByLogin(
-      {
-        login: clientRequest.body.login,
-      },
-      (err, user) => {
-        if (err) throw err;
-        if (user) {
-          User.comparePass(
-            clientRequest.body.password,
-            user.password,
-            (err, result) => {
-              if (err) throw err;
-              return callback(result);
-            }
-          );
-        }
-      }
-    );
+    let authModel = new AuthModel(clientRequest);
+    authModel.auth((status, exitCode, data) => {
+      return callback({ status, exitCode, data });
+    });
   }
 }
 

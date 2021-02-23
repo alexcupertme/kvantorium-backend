@@ -1,12 +1,13 @@
 import User from "../models/DatabaseHandler";
+import QueryUserInfoModel from "../models/RouteModels/QueryUserInfoModel";
 
 class QueryUserInfoController {
   constructor() {}
 
   defaultMethod(clientRequest, callback) {
-    User.getQueryUserInfo(clientRequest.body, (err, user) => {
-      if (err) throw err;
-      return callback(user);
+    let getUser = new QueryUserInfoModel(clientRequest);
+    getUser.queryUserInfo((status, exitCode, data) => {
+      return callback({ status, exitCode, data });
     });
   }
 }

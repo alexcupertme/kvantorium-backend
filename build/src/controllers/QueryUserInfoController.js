@@ -2,14 +2,13 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-const DatabaseHandler_1 = __importDefault(require("../models/DatabaseHandler"));
+const QueryUserInfoModel_1 = __importDefault(require("../models/RouteModels/QueryUserInfoModel"));
 class QueryUserInfoController {
     constructor() { }
     defaultMethod(clientRequest, callback) {
-        DatabaseHandler_1.default.getQueryUserInfo(clientRequest.body, (err, user) => {
-            if (err)
-                throw err;
-            return callback(user);
+        let getUser = new QueryUserInfoModel_1.default(clientRequest);
+        getUser.queryUserInfo((status, exitCode, data) => {
+            return callback({ status, exitCode, data });
         });
     }
 }

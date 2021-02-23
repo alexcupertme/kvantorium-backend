@@ -4,18 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const DatabaseHandler_1 = __importDefault(require("../DatabaseHandler"));
-const RegisterValidator_1 = __importDefault(require("../Methods/Validators/RegisterValidator"));
-class RegisterHandler {
+const AuthValidator_1 = __importDefault(require("../Methods/Validators/AuthValidator"));
+const SignToken_1 = __importDefault(require("../Methods/JWT/SignToken"));
+class AuthHandler {
     constructor(clientData) {
         this._clientData = clientData.body;
     }
     /**
-     * Registers a new user
+     * Authenticate user with login and password
      */
-    register(callback) {
-        let regVal = new RegisterValidator_1.default();
+    auth(callback) {
+        let regVal = new AuthValidator_1.default();
         regVal.login = this._clientData.login;
-        regVal.mail = this._clientData.mail;
         regVal.password = this._clientData.password;
         regVal.validate(regVal, (errors) => {
             if (errors)
@@ -24,21 +24,17 @@ class RegisterHandler {
                 DatabaseHandler_1.default.getUserInfoByLogin({ login: regVal.login }, (err, user) => {
                     if (err)
                         throw err;
-                    if (user)
-                        return callback(0, `ERR_USER_ALREADY_EXISTS`, null);
+                    if (!user)
+                        return callback(0, `ERR_USER_NOT_FOUND`, null);
                     else {
-                        DatabaseHandler_1.default.getQueryUserInfo({ mail: regVal.mail }, (err, userArr) => {
+                        DatabaseHandler_1.default.comparePass(regVal.password, user.password, (err, isMatch) => {
                             if (err)
                                 throw err;
-                            if (userArr.length !== 0) {
-                                return callback(0, `ERR_MAIL_ALREADY_IN_USE`, null);
-                            }
+                            if (!isMatch)
+                                return callback(0, `ERR_PASSWORD_NOT_MATCH`, null);
                             else {
-                                DatabaseHandler_1.default.addUser(regVal, (err, user) => {
-                                    if (err)
-                                        throw err;
-                                    if (user)
-                                        return callback(1, `SUCCESS`, null);
+                                SignToken_1.default(user.login, (token) => {
+                                    return callback(1, `SUCCESS`, { token });
                                 });
                             }
                         });
@@ -48,4 +44,4 @@ class RegisterHandler {
         });
     }
 }
-exports.default = RegisterHandler;
+exports.default = AuthHandler;

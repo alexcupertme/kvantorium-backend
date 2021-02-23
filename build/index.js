@@ -30,6 +30,7 @@ const server = new Server();
 })();
 server.app.use("/api", server.router); // Main route
 server.app.use((err, req, res, next) => {
+    res.set("Access-Control-Allow-Origin", "http://localhost");
     res.status(err.statusCode || 500).json({
         status: "error",
         statusCode: err.statusCode,

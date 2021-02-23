@@ -5,6 +5,7 @@ class AuthRouter {
   private _router = Router();
   private _controller = AuthController;
   public route: string = "/login";
+  private _action = "auth.login";
 
   get router() {
     return this._router;
@@ -27,6 +28,7 @@ class AuthRouter {
       (req: Request, res: Response, next: NextFunction) => {
         try {
           this._controller.defaultMethod(req, (result) => {
+            result.action = this._action;
             res.status(200).json(result);
           });
         } catch (error) {

@@ -8,8 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const class_validator_1 = require("class-validator");
 class Validator {
-    validate(register, callback) {
-        class_validator_1.validate(register).then((errors) => {
+    constructor() { }
+    validate(token, callback) {
+        class_validator_1.validate(token).then((errors) => {
             if (errors.length > 0) {
                 let errorArr = [];
                 errors.forEach((error) => {
@@ -24,13 +25,27 @@ class Validator {
     }
 }
 __decorate([
-    class_validator_1.Matches("(?=^.{8,30}$)(?=.*[0-9])(?=.*[!@#$%-^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$")
-], Validator.prototype, "password", void 0);
-__decorate([
-    class_validator_1.IsEmail(),
-    class_validator_1.Length(1, 50)
-], Validator.prototype, "mail", void 0);
-__decorate([
-    class_validator_1.Length(3, 50)
+    class_validator_1.Length(3, 50),
+    class_validator_1.IsOptional()
 ], Validator.prototype, "login", void 0);
+__decorate([
+    class_validator_1.IsOptional()
+], Validator.prototype, "name", void 0);
+__decorate([
+    class_validator_1.IsOptional()
+], Validator.prototype, "skills", void 0);
+__decorate([
+    class_validator_1.IsOptional()
+], Validator.prototype, "achievements", void 0);
+__decorate([
+    class_validator_1.IsOptional()
+], Validator.prototype, "kvantums", void 0);
+__decorate([
+    class_validator_1.IsOptional(),
+    class_validator_1.Length(1, 5000)
+], Validator.prototype, "description", void 0);
+__decorate([
+    class_validator_1.IsOptional(),
+    class_validator_1.Length(1, 50)
+], Validator.prototype, "role", void 0);
 exports.default = Validator;

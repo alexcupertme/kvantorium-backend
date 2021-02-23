@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const class_validator_1 = require("class-validator");
 class Validator {
-    validate(register, callback) {
-        class_validator_1.validate(register).then((errors) => {
+    validate(auth, callback) {
+        class_validator_1.validate(auth).then((errors) => {
             if (errors.length > 0) {
                 let errorArr = [];
                 errors.forEach((error) => {
@@ -26,10 +26,6 @@ class Validator {
 __decorate([
     class_validator_1.Matches("(?=^.{8,30}$)(?=.*[0-9])(?=.*[!@#$%-^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$")
 ], Validator.prototype, "password", void 0);
-__decorate([
-    class_validator_1.IsEmail(),
-    class_validator_1.Length(1, 50)
-], Validator.prototype, "mail", void 0);
 __decorate([
     class_validator_1.Length(3, 50)
 ], Validator.prototype, "login", void 0);

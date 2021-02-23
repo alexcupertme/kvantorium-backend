@@ -6,8 +6,8 @@ const RegisterModel_1 = __importDefault(require("../models/RouteModels/RegisterM
 class RegisterController {
     constructor() { }
     defaultMethod(clientRequest, callback) {
-        let register = new RegisterModel_1.default(clientRequest);
-        register.register((status, exitCode, data) => {
+        let regModel = new RegisterModel_1.default(clientRequest);
+        regModel.register((status, exitCode, data) => {
             return callback({ status, exitCode, data });
         });
     }

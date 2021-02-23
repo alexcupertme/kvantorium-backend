@@ -12,17 +12,10 @@ export = function addUser(data, callback) {
     registerDate: date,
     role: "user",
   };
-  let valid = new RegisterValidator();
-  valid.validate(valid, (error) => {
-    if (error) {
-      return callback(null, error);
-    } else {
-      let user: any = new UserSchema(params);
-      genHash(user.password, (err, hash) => {
-        if (err) return callback(err);
-        user.password = hash;
-        user.save(callback);
-      });
-    }
+  let user: any = new UserSchema(params);
+  genHash(user.password, (err, hash) => {
+    if (err) return callback(err);
+    user.password = hash;
+    user.save(callback);
   });
 };

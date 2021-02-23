@@ -1,7 +1,8 @@
 import User from "../DatabaseHandler";
-import Validator from "../Methods/Validators/RegisterValidator";
+import Validator from "../Methods/Validators/AuthValidator";
+import signToken from "../Methods/JWT/SignToken";
 
-export default class RegisterHandler {
+export default class AuthHandler {
   private _clientData;
 
   constructor(clientData) {
@@ -9,13 +10,12 @@ export default class RegisterHandler {
   }
 
   /**
-   * Registers a new user
+   * Authenticate user with login and password
    */
-  public register(callback) {
+  public auth(callback) {
     let regVal = new Validator();
 
     regVal.login = this._clientData.login;
-    regVal.mail = this._clientData.mail;
     regVal.password = this._clientData.password;
 
     regVal.validate(regVal, (errors) => {
@@ -24,16 +24,14 @@ export default class RegisterHandler {
       else {
         User.getUserInfoByLogin({ login: regVal.login }, (err, user) => {
           if (err) throw err;
-          if (user) return callback(0, `ERR_USER_ALREADY_EXISTS`, null);
+          if (!user) return callback(0, `ERR_USER_NOT_FOUND`, null);
           else {
-            User.getQueryUserInfo({ mail: regVal.mail }, (err, userArr) => {
+            User.comparePass(regVal.password, user.password, (err, isMatch) => {
               if (err) throw err;
-              if (userArr.length !== 0) {
-                return callback(0, `ERR_MAIL_ALREADY_IN_USE`, null);
-              } else {
-                User.addUser(regVal, (err, user) => {
-                  if (err) throw err;
-                  if (user) return callback(1, `SUCCESS`, null);
+              if (!isMatch) return callback(0, `ERR_PASSWORD_NOT_MATCH`, null);
+              else {
+                signToken(user.login, (token) => {
+                  return callback(1, `SUCCESS`, { token });
                 });
               }
             });
