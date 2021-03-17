@@ -9,8 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
     "express": "^4.17.1",
     "mongoose": "^5.12.0",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.7",
     "typescript": "^4.2.3"
   }

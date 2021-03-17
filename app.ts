@@ -1,4 +1,12 @@
-import express, { Request, Response } from "express";
+import fs from "fs";
+import path from "path";
+import morgan from "morgan";
+import express, { Request, Response, NextFunction } from "express";
+import bodyParser from "body-parser";
+import MasterRouter from "./routes/MasterRouter";
+import errorMiddleware from "./middleware/error.middleware";
+import unknownRoute from "./middleware/unknownRoute.middleware";
+import HttpException from "./exceptions/HttpException";
 
 class Server {
 	public app = express();
@@ -13,24 +21,30 @@ class Server {
 		});
 	}
 
-	private _configRouter() {
-		this.app.use(
-			"/",
-			this.router.get("/hello", (request, response) => {
-				response.send("Hello world!");
-			})
-		);
+	private _configureRouters() {
+		this.app.use("/api", MasterRouter);
 	}
 
-	private _unknownRoute() {
-		this.app.get("*", (request: Request, response: Response) => {
-			response.json({ exitCode: -1, msg: "This method does not exists!" });
-		});
+	private _initializeErrorHandling() {
+		this.app.use(errorMiddleware);
+	}
+
+	private _configureMiddlewares() {
+		this.app.use(bodyParser.json());
+		this.app.use("/api", MasterRouter);
+
+		let accessLogStream = fs.createWriteStream(
+			path.join(__dirname, "access.log"),
+			{ flags: "a" }
+		);
+		this.app.use(morgan("combined", { stream: accessLogStream }));
+		this.app.use(unknownRoute);
 	}
 
 	constructor() {
-		this._configRouter();
-		this._unknownRoute();
+		this._configureRouters();
+		this._configureMiddlewares();
+		this._initializeErrorHandling();
 	}
 }
 

@@ -6,16 +6,15 @@ const express_1 = __importDefault(require("express"));
 class UserRouter {
     constructor() {
         this._router = express_1.default.Router();
-        this.route = "/login";
         this._action = "auth.login";
-        this._configure();
+        this._getUserByQuery();
     }
     get router() {
         return this._router;
     }
-    _configure() {
+    _getUserByQuery() {
         this._router.get("/", (req, res, next) => {
-            res.status(200).send("hello there!");
+            res.send("Hello there!");
         });
     }
 }

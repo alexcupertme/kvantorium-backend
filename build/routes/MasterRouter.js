@@ -3,20 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const express_1 = __importDefault(require("express"));
-class UserRouter {
+const User_route_1 = __importDefault(require("./User.route"));
+class MasterRouter {
     constructor() {
         this._router = express_1.default.Router();
-        this.route = "/login";
-        this._action = "auth.login";
-        this._configure();
+        this._connectRoutes();
     }
     get router() {
         return this._router;
     }
-    _configure() {
-        this._router.get("/", (req, res, next) => {
-            res.status(200).send("hello there!");
-        });
+    _connectRoutes() {
+        this._router.use("/user", User_route_1.default);
     }
 }
-module.exports = new UserRouter().router;
+module.exports = new MasterRouter().router;
