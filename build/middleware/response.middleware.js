@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function errorMiddleware(error, request, response, next) {
+function errorMiddleware(resData, request, response, next) {
     const status = error.status || 500;
     const data = error.data || 0;
     const type = "error";

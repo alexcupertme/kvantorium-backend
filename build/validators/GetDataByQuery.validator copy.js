@@ -6,38 +6,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class GetDataByQueryDto {
 }
 __decorate([
-    class_validator_1.Length(3, 50),
-    class_transformer_1.Expose()
+    class_validator_1.Length(3, 50)
 ], GetDataByQueryDto.prototype, "login", void 0);
 __decorate([
-    class_validator_1.IsOptional(),
-    class_transformer_1.Expose()
+    class_validator_1.IsOptional()
 ], GetDataByQueryDto.prototype, "name", void 0);
 __decorate([
-    class_validator_1.IsOptional(),
-    class_transformer_1.Expose()
+    class_validator_1.IsOptional()
 ], GetDataByQueryDto.prototype, "skills", void 0);
 __decorate([
-    class_validator_1.IsOptional(),
-    class_transformer_1.Expose()
+    class_validator_1.IsOptional()
 ], GetDataByQueryDto.prototype, "achievements", void 0);
 __decorate([
-    class_validator_1.IsOptional(),
-    class_transformer_1.Expose()
+    class_validator_1.IsOptional()
 ], GetDataByQueryDto.prototype, "kvantums", void 0);
 __decorate([
     class_validator_1.IsOptional(),
-    class_validator_1.Length(1, 5000),
-    class_transformer_1.Expose()
+    class_validator_1.Length(1, 5000)
 ], GetDataByQueryDto.prototype, "description", void 0);
 __decorate([
     class_validator_1.IsOptional(),
-    class_validator_1.Length(1, 50),
-    class_transformer_1.Expose()
+    class_validator_1.Length(1, 50)
 ], GetDataByQueryDto.prototype, "role", void 0);
 exports.default = GetDataByQueryDto;
