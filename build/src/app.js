@@ -18,7 +18,7 @@ class Server {
     constructor() {
         this.app = express_1.default();
         this.router = express_1.default.Router();
-        this._PORT = 5901 || process.env.PORT;
+        this._PORT = 8080 || process.env.PORT;
         this._configureMiddlewares();
         DatabaseConnection_1.default();
         this._initializeErrorHandling();
