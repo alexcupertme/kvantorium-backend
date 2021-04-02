@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const exitCodes_config_1 = __importDefault(require("./config/exitCodes.config"));
-const HttpException_1 = __importDefault(require("./exceptions/HttpException"));
+const HttpException_1 = __importDefault(require("./models/HttpException"));
 class MasterValidator {
     validationMiddleware(type) {
         return (req, res, next) => {

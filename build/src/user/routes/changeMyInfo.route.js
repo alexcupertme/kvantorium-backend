@@ -12,9 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const express_1 = __importDefault(require("express"));
-const HttpException_1 = __importDefault(require("../../exceptions/HttpException"));
+const HttpException_1 = __importDefault(require("../../models/HttpException"));
 const MasterValidator_1 = __importDefault(require("../../MasterValidator"));
-const ResponseSchema_1 = __importDefault(require("../../exceptions/ResponseSchema"));
+const ResponseSchema_1 = __importDefault(require("../../models/ResponseSchema"));
 const user_validator_1 = require("../validators/user.validator");
 const user_model_1 = __importDefault(require("../models/user.model"));
 const exitCodes_config_1 = __importDefault(require("../../config/exitCodes.config"));

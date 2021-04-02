@@ -35,7 +35,7 @@ const jwt = __importStar(require("jsonwebtoken"));
 const token_config_1 = __importDefault(require("../config/token.config"));
 const user_model_1 = __importDefault(require("../user/models/user.model"));
 const exitCodes_config_1 = __importDefault(require("../config/exitCodes.config"));
-const HttpException_1 = __importDefault(require("../exceptions/HttpException"));
+const HttpException_1 = __importDefault(require("../models/HttpException"));
 function authMiddleware(request, response, next) {
     return __awaiter(this, void 0, void 0, function* () {
         const cookies = request.cookies;

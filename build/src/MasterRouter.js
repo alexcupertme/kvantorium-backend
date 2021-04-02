@@ -2,13 +2,13 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+const auth_middleware_1 = __importDefault(require("./middleware/auth.middleware"));
 const express_1 = __importDefault(require("express"));
 const user_route_1 = __importDefault(require("./user/routes/user.route"));
 const authTest_route_1 = __importDefault(require("./test/routes/authTest.route"));
 const getUserInfo_route_1 = __importDefault(require("./user/routes/getUserInfo.route"));
 const changeMyInfo_route_1 = __importDefault(require("./user/routes/changeMyInfo.route"));
 const changePassword_route_1 = __importDefault(require("./user/routes/changePassword.route"));
-const auth_middleware_1 = __importDefault(require("./middleware/auth.middleware"));
 const post_route_1 = __importDefault(require("./post/routes/post.route"));
 class MasterRouter {
     constructor() {

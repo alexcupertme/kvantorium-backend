@@ -13,7 +13,7 @@ import responseSettings from "./middleware/setup.middleware";
 class Server {
 	public app = express();
 	public router = express.Router();
-	private _PORT = 8080 || process.env.PORT;
+	private _PORT = 5901 || process.env.PORT;
 
 	public listen() {
 		this.app.listen(this._PORT, () => {
