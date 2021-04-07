@@ -37,6 +37,7 @@ class GetUserInfoRouter {
                             kvantums: element.kvantums,
                             description: element.description,
                             role: element.role,
+                            registerDate: element.registerDate,
                         };
                         resData.push(resItem);
                     });

@@ -1,19 +1,31 @@
-FROM node:12
+FROM node:12-alpine AS BUILD_IMAGE
 
-# создание директории приложения
+# couchbase sdk requirements
+RUN apk update && apk add yarn curl bash python g++ make && rm -rf /var/cache/apk/*
+
+# install node-prune (https://github.com/tj/node-prune)
+
 WORKDIR /usr/src/app
 
-# установка зависимостей
-# символ астериск ("*") используется для того чтобы по возможности 
-# скопировать оба файла: package.json и package-lock.json
 COPY package*.json ./
 
-RUN npm install
-# Если вы создаете сборку для продакшн
-# RUN npm ci --only=production
+# install dependencies
+RUN yarn --frozen-lockfile
 
 # копируем исходный код
 COPY . .
 
-EXPOSE 8080
-CMD [ "node", "build/app.js" ]
+
+RUN npm install
+
+FROM node:12-alpine
+
+WORKDIR /usr/src/app
+
+# copy from build image
+COPY --from=BUILD_IMAGE /usr/src/app/build ./build
+COPY --from=BUILD_IMAGE /usr/src/app/node_modules ./node_modules
+
+
+EXPOSE 8080:8080
+CMD [ "node", "build/src/app.js" ]

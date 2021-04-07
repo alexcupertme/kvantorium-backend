@@ -1,0 +1,17 @@
+# Установить язык
+language: node_js
+
+# Установить версию Node.js
+node_js:
+  - "12"
+
+services:
+  # Использовать командную строку Docker
+  - docker
+
+deploy:
+  # Собрать Docker-контейнер и отправить его на Docker Hub
+  provider: script
+  script: bash deploy.sh
+  on:
+    branch: ServerKvantorium-v3.0.0

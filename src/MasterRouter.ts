@@ -7,6 +7,7 @@ import getUserInfoRoute from "./user/routes/getUserInfo.route";
 import changeMyInfoRoute from "./user/routes/changeMyInfo.route";
 import changePasswordRoute from "./user/routes/changePassword.route";
 import postRoute from "./post/routes/post.route";
+import autoPullRoute from "./autopull/autopull.route";
 
 class MasterRouter {
 	private _router = express.Router();
@@ -22,16 +23,10 @@ class MasterRouter {
 		this._router.use("/changeinfo", authMiddleware, changeMyInfoRoute);
 		this._router.use("/changepassword", authMiddleware, changePasswordRoute);
 		this._router.use("/post", postRoute);
-	}
-
-	private _defaultRoute() {
-		this._router.post("/", (req, res, next) => {
-			res.send("API v.2");
-		});
+		this._router.use("/autopull", autoPullRoute);
 	}
 
 	constructor() {
-		this._defaultRoute();
 		this._connectRoutes();
 	}
 }
