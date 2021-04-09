@@ -79,6 +79,12 @@ class ChangeMyInfoDto {
 	@Expose()
 	name: string;
 
+	@IsEmail()
+	@Expose()
+	@IsOptional()
+	@Length(1, 50)
+	mail: string;
+
 	@IsOptional()
 	@Expose()
 	skills: Array<Object | string | number>;

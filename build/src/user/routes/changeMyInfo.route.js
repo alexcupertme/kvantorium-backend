@@ -15,7 +15,7 @@ const express_1 = __importDefault(require("express"));
 const HttpException_1 = __importDefault(require("../../models/HttpException"));
 const MasterValidator_1 = __importDefault(require("../../MasterValidator"));
 const ResponseSchema_1 = __importDefault(require("../../models/ResponseSchema"));
-const user_validator_1 = require("../validators/user.validator");
+const user_dto_1 = require("../validators/user.dto");
 const user_model_1 = __importDefault(require("../models/user.model"));
 const exitCodes_config_1 = __importDefault(require("../../config/exitCodes.config"));
 class ChangeMyInfoRouter {
@@ -44,7 +44,7 @@ class ChangeMyInfoRouter {
         return this._router;
     }
     _configure() {
-        this._router.post("/", MasterValidator_1.default.validationMiddleware(user_validator_1.ChangeMyInfoDto), this._changeMyInfo);
+        this._router.post("/", MasterValidator_1.default.validationMiddleware(user_dto_1.ChangeMyInfoDto), this._changeMyInfo);
     }
 }
 module.exports = new ChangeMyInfoRouter().router;

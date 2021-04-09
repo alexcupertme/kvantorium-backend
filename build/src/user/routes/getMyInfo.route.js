@@ -12,35 +12,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const express_1 = __importDefault(require("express"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const HttpException_1 = __importDefault(require("../../models/HttpException"));
-const MasterValidator_1 = __importDefault(require("../../MasterValidator"));
 const ResponseSchema_1 = __importDefault(require("../../models/ResponseSchema"));
-const user_dto_1 = require("../validators/user.dto");
+const token_config_1 = __importDefault(require("../../config/token.config"));
 const exitCodes_config_1 = __importDefault(require("../../config/exitCodes.config"));
 const user_model_1 = __importDefault(require("../models/user.model"));
-class GetUserInfoRouter {
+class GetMyInfoRouter {
     constructor() {
         this._router = express_1.default.Router();
-        this._getUserInfo = (request, response, next) => __awaiter(this, void 0, void 0, function* () {
-            const userData = request.body;
-            yield user_model_1.default.find(userData, (err, user) => __awaiter(this, void 0, void 0, function* () {
+        this._getMyInfo = (request, response, next) => __awaiter(this, void 0, void 0, function* () {
+            const userData = (yield jsonwebtoken_1.default.verify(request.cookies.Authorization, token_config_1.default.config.secretKey));
+            console.log(userData);
+            const uuid = userData._id;
+            yield user_model_1.default.findOne({ id: uuid }, (err, user) => __awaiter(this, void 0, void 0, function* () {
                 if (!user)
                     next(new HttpException_1.default(0, 400, exitCodes_config_1.default.userNotFound));
                 else {
-                    let resData = [];
-                    user.forEach((element) => {
-                        let resItem = {
-                            login: element.login,
-                            name: element.name,
-                            skills: element.skills,
-                            achievements: element.achievements,
-                            kvantums: element.kvantums,
-                            description: element.description,
-                            role: element.role,
-                            registerDate: element.registerDate,
-                        };
-                        resData.push(resItem);
-                    });
+                    let resData = {
+                        login: user.login,
+                        name: user.name,
+                        skills: user.skills,
+                        achievements: user.achievements,
+                        kvantums: user.kvantums,
+                        description: user.description,
+                        role: user.role,
+                        registerDate: user.registerDate,
+                    };
                     response.send(new ResponseSchema_1.default(request.originalUrl, resData, 1, exitCodes_config_1.default.success));
                 }
             }));
@@ -51,7 +49,7 @@ class GetUserInfoRouter {
         return this._router;
     }
     _configure() {
-        this._router.post("/", MasterValidator_1.default.validationMiddleware(user_dto_1.GetUserInfoDto), this._getUserInfo);
+        this._router.post("/", this._getMyInfo);
     }
 }
-module.exports = new GetUserInfoRouter().router;
+module.exports = new GetMyInfoRouter().router;

@@ -5,10 +5,11 @@ import HttpException from "../../models/HttpException";
 import MasterValidator from "../../MasterValidator";
 
 import ResponseSchema from "../../models/ResponseSchema";
-import { LoginDto, RegisterDto } from "../validators/user.validator";
+import { LoginDto, RegisterDto } from "../validators/user.dto";
 import User from "../models/user.model";
 import exitCodes from "../../config/exitCodes.config";
 import { TokenData } from "../../models/token.interface";
+import createCookie from "../../scripts/createCookie";
 
 import createToken from "../../scripts/createToken";
 
@@ -17,10 +18,6 @@ class UserRouter {
 
 	get router() {
 		return this._router;
-	}
-
-	private _createCookie(tokenData: TokenData) {
-		return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}; Path=/api/`;
 	}
 
 	private _registration = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
@@ -36,8 +33,9 @@ class UserRouter {
 							...userData,
 							password: hashedPassword,
 						});
-						const tokenData = await createToken(user, User);
-						await response.setHeader("Set-Cookie", [this._createCookie(tokenData)]);
+						const tokenData = await createToken(user.login);
+						await User.updateOne({ login: user.login }, { id: tokenData.uuid });
+						await response.setHeader("Set-Cookie", [createCookie(tokenData)]);
 						await response.send(new ResponseSchema(request.originalUrl, { tokenData }, 1, exitCodes.success));
 					}
 				});
@@ -51,9 +49,10 @@ class UserRouter {
 			else {
 				const isPasswordMatching = await bcrypt.compare(userData.password, user.password);
 				if (isPasswordMatching) {
-					const tokenData = await createToken(user, User);
-					response.setHeader("Set-Cookie", [this._createCookie(tokenData)]);
-					response.send(new ResponseSchema(request.originalUrl, { tokenData }, 1, exitCodes.success));
+					const tokenData = await createToken(user.login);
+					await User.updateOne({ login: user.login }, { id: tokenData.uuid });
+					response.setHeader("Set-Cookie", [createCookie(tokenData)]);
+					response.send(new ResponseSchema(request.originalUrl, { tokenData }, 1, exitCodes.success)).end();
 				} else {
 					next(new HttpException(0, 400, exitCodes.wrongPassword));
 				}

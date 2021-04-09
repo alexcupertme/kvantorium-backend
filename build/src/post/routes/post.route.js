@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const express_1 = __importDefault(require("express"));
 const MasterValidator_1 = __importDefault(require("../../MasterValidator"));
-const post_validator_1 = require("../validators/post.validator");
+const post_dto_1 = require("../validators/post.dto");
 class PostRouter {
     constructor() {
         this._router = express_1.default.Router();
@@ -24,7 +24,7 @@ class PostRouter {
         return this._router;
     }
     _configure() {
-        this._router.post("/", MasterValidator_1.default.postValidationMiddleware(post_validator_1.PostDto), this._getPostById);
+        this._router.post("/", MasterValidator_1.default.postValidationMiddleware(post_dto_1.PostDto), this._getPostById);
     }
 }
 module.exports = new PostRouter().router;

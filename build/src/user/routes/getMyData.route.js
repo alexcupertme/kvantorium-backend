@@ -12,18 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const express_1 = __importDefault(require("express"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const HttpException_1 = __importDefault(require("../../models/HttpException"));
 const MasterValidator_1 = __importDefault(require("../../MasterValidator"));
 const ResponseSchema_1 = __importDefault(require("../../models/ResponseSchema"));
+const token_config_1 = __importDefault(require("../../config/token.config"));
 const user_dto_1 = require("../validators/user.dto");
 const exitCodes_config_1 = __importDefault(require("../../config/exitCodes.config"));
 const user_model_1 = __importDefault(require("../models/user.model"));
-class GetUserInfoRouter {
+class GetMyDataRouter {
     constructor() {
         this._router = express_1.default.Router();
-        this._getUserInfo = (request, response, next) => __awaiter(this, void 0, void 0, function* () {
-            const userData = request.body;
-            yield user_model_1.default.find(userData, (err, user) => __awaiter(this, void 0, void 0, function* () {
+        this._getMyData = (request, response, next) => __awaiter(this, void 0, void 0, function* () {
+            const userData = (yield jsonwebtoken_1.default.verify(request.cookies.Authorization, token_config_1.default.config.secretKey));
+            const uuid = userData._id;
+            yield user_model_1.default.find({ uuid }, (err, user) => __awaiter(this, void 0, void 0, function* () {
                 if (!user)
                     next(new HttpException_1.default(0, 400, exitCodes_config_1.default.userNotFound));
                 else {
@@ -51,7 +54,7 @@ class GetUserInfoRouter {
         return this._router;
     }
     _configure() {
-        this._router.post("/", MasterValidator_1.default.validationMiddleware(user_dto_1.GetUserInfoDto), this._getUserInfo);
+        this._router.post("/", MasterValidator_1.default.validationMiddleware(user_dto_1.GetUserInfoDto), this._getMyData);
     }
 }
-module.exports = new GetUserInfoRouter().router;
+module.exports = new GetMyDataRouter().router;

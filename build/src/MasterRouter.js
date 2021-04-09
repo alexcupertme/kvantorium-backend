@@ -10,6 +10,7 @@ const getUserInfo_route_1 = __importDefault(require("./user/routes/getUserInfo.r
 const changeMyInfo_route_1 = __importDefault(require("./user/routes/changeMyInfo.route"));
 const changePassword_route_1 = __importDefault(require("./user/routes/changePassword.route"));
 const post_route_1 = __importDefault(require("./post/routes/post.route"));
+const getMyInfo_route_1 = __importDefault(require("./user/routes/getMyInfo.route"));
 const autopull_route_1 = __importDefault(require("./autopull/autopull.route"));
 class MasterRouter {
     constructor() {
@@ -22,6 +23,7 @@ class MasterRouter {
     _connectRoutes() {
         this._router.use("/user", user_route_1.default);
         this._router.use("/test_api", auth_middleware_1.default, authTest_route_1.default);
+        this._router.use("/getmyinfo", auth_middleware_1.default, getMyInfo_route_1.default);
         this._router.use("/getuserinfo", auth_middleware_1.default, getUserInfo_route_1.default);
         this._router.use("/changeinfo", auth_middleware_1.default, changeMyInfo_route_1.default);
         this._router.use("/changepassword", auth_middleware_1.default, changePassword_route_1.default);

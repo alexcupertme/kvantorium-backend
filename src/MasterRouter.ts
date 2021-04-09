@@ -7,6 +7,7 @@ import getUserInfoRoute from "./user/routes/getUserInfo.route";
 import changeMyInfoRoute from "./user/routes/changeMyInfo.route";
 import changePasswordRoute from "./user/routes/changePassword.route";
 import postRoute from "./post/routes/post.route";
+import getMyInfoRoute from "./user/routes/getMyInfo.route";
 import autoPullRoute from "./autopull/autopull.route";
 
 class MasterRouter {
@@ -19,6 +20,7 @@ class MasterRouter {
 	private _connectRoutes() {
 		this._router.use("/user", userRoute);
 		this._router.use("/test_api", authMiddleware, testRoute);
+		this._router.use("/getmyinfo", authMiddleware, getMyInfoRoute);
 		this._router.use("/getuserinfo", authMiddleware, getUserInfoRoute);
 		this._router.use("/changeinfo", authMiddleware, changeMyInfoRoute);
 		this._router.use("/changepassword", authMiddleware, changePasswordRoute);

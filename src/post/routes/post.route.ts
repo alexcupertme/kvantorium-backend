@@ -8,7 +8,7 @@ import ResponseSchema from "../../models/ResponseSchema";
 import User from "../../user/models/user.model";
 import exitCodes from "../../config/exitCodes.config";
 import createToken from "../../scripts/createToken";
-import { PostDto } from "../validators/post.validator";
+import { PostDto } from "../validators/post.dto";
 
 class PostRouter {
 	private _router = express.Router();

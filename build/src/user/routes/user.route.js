@@ -16,9 +16,10 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const HttpException_1 = __importDefault(require("../../models/HttpException"));
 const MasterValidator_1 = __importDefault(require("../../MasterValidator"));
 const ResponseSchema_1 = __importDefault(require("../../models/ResponseSchema"));
-const user_validator_1 = require("../validators/user.validator");
+const user_dto_1 = require("../validators/user.dto");
 const user_model_1 = __importDefault(require("../models/user.model"));
 const exitCodes_config_1 = __importDefault(require("../../config/exitCodes.config"));
+const createCookie_1 = __importDefault(require("../../scripts/createCookie"));
 const createToken_1 = __importDefault(require("../../scripts/createToken"));
 class UserRouter {
     constructor() {
@@ -35,8 +36,9 @@ class UserRouter {
                         else {
                             const hashedPassword = yield bcrypt_1.default.hash(userData.password, 10);
                             const user = yield user_model_1.default.create(Object.assign(Object.assign({}, userData), { password: hashedPassword }));
-                            const tokenData = yield createToken_1.default(user, user_model_1.default);
-                            yield response.setHeader("Set-Cookie", [this._createCookie(tokenData)]);
+                            const tokenData = yield createToken_1.default(user.login);
+                            yield user_model_1.default.updateOne({ login: user.login }, { id: tokenData.uuid });
+                            yield response.setHeader("Set-Cookie", [createCookie_1.default(tokenData)]);
                             yield response.send(new ResponseSchema_1.default(request.originalUrl, { tokenData }, 1, exitCodes_config_1.default.success));
                         }
                     }));
@@ -51,9 +53,10 @@ class UserRouter {
                 else {
                     const isPasswordMatching = yield bcrypt_1.default.compare(userData.password, user.password);
                     if (isPasswordMatching) {
-                        const tokenData = yield createToken_1.default(user, user_model_1.default);
-                        response.setHeader("Set-Cookie", [this._createCookie(tokenData)]);
-                        response.send(new ResponseSchema_1.default(request.originalUrl, { tokenData }, 1, exitCodes_config_1.default.success));
+                        const tokenData = yield createToken_1.default(user.login);
+                        yield user_model_1.default.updateOne({ login: user.login }, { id: tokenData.uuid });
+                        response.setHeader("Set-Cookie", [createCookie_1.default(tokenData)]);
+                        response.send(new ResponseSchema_1.default(request.originalUrl, { tokenData }, 1, exitCodes_config_1.default.success)).end();
                     }
                     else {
                         next(new HttpException_1.default(0, 400, exitCodes_config_1.default.wrongPassword));
@@ -66,12 +69,9 @@ class UserRouter {
     get router() {
         return this._router;
     }
-    _createCookie(tokenData) {
-        return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}; Path=/api/`;
-    }
     _configure() {
-        this._router.post("/register", MasterValidator_1.default.validationMiddleware(user_validator_1.RegisterDto), this._registration);
-        this._router.post("/login", MasterValidator_1.default.validationMiddleware(user_validator_1.LoginDto), this._login);
+        this._router.post("/register", MasterValidator_1.default.validationMiddleware(user_dto_1.RegisterDto), this._registration);
+        this._router.post("/login", MasterValidator_1.default.validationMiddleware(user_dto_1.LoginDto), this._login);
     }
 }
 module.exports = new UserRouter().router;

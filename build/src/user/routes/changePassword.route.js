@@ -16,7 +16,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const HttpException_1 = __importDefault(require("../../models/HttpException"));
 const MasterValidator_1 = __importDefault(require("../../MasterValidator"));
 const ResponseSchema_1 = __importDefault(require("../../models/ResponseSchema"));
-const user_validator_1 = require("../validators/user.validator");
+const user_dto_1 = require("../validators/user.dto");
 const user_model_1 = __importDefault(require("../models/user.model"));
 const exitCodes_config_1 = __importDefault(require("../../config/exitCodes.config"));
 const createToken_1 = __importDefault(require("../../scripts/createToken"));
@@ -27,9 +27,12 @@ class ChangePasswordRouter {
             const userData = request.body;
             if (yield bcrypt_1.default.compare(userData.oldPassword, request.user.password)) {
                 const hashedPassword = yield bcrypt_1.default.hash(userData.password, 10);
-                yield user_model_1.default.findOneAndUpdate({ login: request.user.login }, { password: hashedPassword });
-                const tokenData = yield createToken_1.default(request.user, user_model_1.default);
-                yield response.send(new ResponseSchema_1.default(request.originalUrl, { tokenData }, 1, exitCodes_config_1.default.success));
+                const user = yield user_model_1.default.findOneAndUpdate({ login: request.user.login }, { password: hashedPassword });
+                if (user !== null) {
+                    const tokenData = yield createToken_1.default(user.login);
+                    yield user_model_1.default.updateOne({ login: request.user.login }, { id: tokenData.uuid });
+                    yield response.send(new ResponseSchema_1.default(request.originalUrl, { tokenData }, 1, exitCodes_config_1.default.success));
+                }
             }
             else {
                 next(new HttpException_1.default(request.originalUrl, 0, exitCodes_config_1.default.wrongPassword));
@@ -41,7 +44,7 @@ class ChangePasswordRouter {
         return this._router;
     }
     _configure() {
-        this._router.post("/", MasterValidator_1.default.validationMiddleware(user_validator_1.ChangePasswordDto), this._changePassword);
+        this._router.post("/", MasterValidator_1.default.validationMiddleware(user_dto_1.ChangePasswordDto), this._changePassword);
     }
 }
 module.exports = new ChangePasswordRouter().router;

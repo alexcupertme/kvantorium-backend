@@ -14,20 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const uuid_1 = require("uuid");
 const token_config_1 = __importDefault(require("../config/token.config"));
-module.exports = function createToken(user, User) {
+module.exports = function createToken(login) {
     return __awaiter(this, void 0, void 0, function* () {
         let uuid = uuid_1.v4();
-        yield User.update({ login: user.login }, { id: uuid });
-        console.log(uuid);
         let tokenConfig = token_config_1.default.config;
         const expiresIn = tokenConfig.date; // 1 month
         const secret = tokenConfig.secretKey;
         const dataStoredInToken = {
             _id: uuid,
         };
-        return {
-            expiresIn,
-            token: jsonwebtoken_1.default.sign(dataStoredInToken, secret, { expiresIn }),
-        };
+        return { uuid, login, expiresIn, token: jsonwebtoken_1.default.sign(dataStoredInToken, secret, { expiresIn }) };
     });
 };

@@ -1,7 +1,7 @@
 import DatabaseConfig from "./config/DB.config";
 import mongoose from "mongoose";
 
-function databaseConnect() {
+async function databaseConnect() {
 	mongoose.connect(DatabaseConfig.config.user, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
@@ -15,4 +15,4 @@ function databaseConnect() {
 	});
 }
 
-export = databaseConnect;
+export { databaseConnect, mongoose };

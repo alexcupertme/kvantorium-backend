@@ -4,7 +4,7 @@ import HttpException from "../../models/HttpException";
 import MasterValidator from "../../MasterValidator";
 
 import ResponseSchema from "../../models/ResponseSchema";
-import { ChangeMyInfoDto, GetUserInfoDto } from "../validators/user.validator";
+import { ChangeMyInfoDto, GetUserInfoDto } from "../validators/user.dto";
 import User from "../models/user.model";
 import exitCodes from "../../config/exitCodes.config";
 
