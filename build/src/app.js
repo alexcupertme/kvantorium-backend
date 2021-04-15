@@ -28,12 +28,17 @@ class Server {
         this.app = express_1.default();
         this.router = express_1.default.Router();
         this._PORT = 8080 || process.env.PORT;
-        this.server = this.app.listen(this._PORT, () => {
-            console.log(`⚡️ [server]: Server is running at http://localhost:${this._PORT}`);
-        });
         DatabaseConnection_1.databaseConnect();
         this._configureMiddlewares();
         this._initializeErrorHandling();
+        this.server();
+    }
+    server() {
+        if (process.env.TEST !== "true") {
+            this.app.listen(this._PORT, () => {
+                console.log(`⚡️ [server]: Server is running at http://localhost:${this._PORT}`);
+            });
+        }
     }
     _initializeErrorHandling() {
         this.app.use(error_middleware_1.default);

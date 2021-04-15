@@ -20,7 +20,6 @@ class GetMyInfoRouter {
 
 	private _getMyInfo = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
 		const userData = (await jwt.verify(request.cookies.Authorization, TokenConfig.config.secretKey)) as DataStoredInToken;
-		console.log(userData);
 		const uuid = userData._id;
 		await User.findOne({ id: uuid }, async (err, user: any) => {
 			if (!user) next(new HttpException(0, 400, exitCodes.userNotFound));

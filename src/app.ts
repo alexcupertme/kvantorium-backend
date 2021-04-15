@@ -16,9 +16,13 @@ class Server {
 	public router = express.Router();
 	private _PORT = 8080 || process.env.PORT;
 
-	public server = this.app.listen(this._PORT, () => {
-		console.log(`⚡️ [server]: Server is running at http://localhost:${this._PORT}`);
-	});
+	public server() {
+		if (process.env.TEST !== "true") {
+			this.app.listen(this._PORT, () => {
+				console.log(`⚡️ [server]: Server is running at http://localhost:${this._PORT}`);
+			});
+		}
+	}
 
 	private _initializeErrorHandling() {
 		this.app.use(errorMiddleware);
@@ -38,6 +42,7 @@ class Server {
 		databaseConnect();
 		this._configureMiddlewares();
 		this._initializeErrorHandling();
+		this.server();
 	}
 }
 export default new Server();

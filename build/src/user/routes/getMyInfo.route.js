@@ -23,7 +23,6 @@ class GetMyInfoRouter {
         this._router = express_1.default.Router();
         this._getMyInfo = (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const userData = (yield jsonwebtoken_1.default.verify(request.cookies.Authorization, token_config_1.default.config.secretKey));
-            console.log(userData);
             const uuid = userData._id;
             yield user_model_1.default.findOne({ id: uuid }, (err, user) => __awaiter(this, void 0, void 0, function* () {
                 if (!user)

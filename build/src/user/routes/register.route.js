@@ -16,24 +16,30 @@ const HttpException_1 = __importDefault(require("../../models/HttpException"));
 const MasterValidator_1 = __importDefault(require("../../MasterValidator"));
 const ResponseSchema_1 = __importDefault(require("../../models/ResponseSchema"));
 const user_dto_1 = require("../validators/user.dto");
-const user_model_1 = __importDefault(require("../models/user.model"));
 const exitCodes_config_1 = __importDefault(require("../../config/exitCodes.config"));
-class ChangeMyInfoRouter {
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const user_model_1 = __importDefault(require("../models/user.model"));
+const createToken_1 = __importDefault(require("../../scripts/createToken"));
+const createCookie_1 = __importDefault(require("../../scripts/createCookie"));
+class RegisterRouter {
     constructor() {
         this._router = express_1.default.Router();
-        this._changeMyInfo = (request, response, next) => __awaiter(this, void 0, void 0, function* () {
+        this._register = (request, response, next) => __awaiter(this, void 0, void 0, function* () {
             const userData = request.body;
-            yield user_model_1.default.find({ login: userData.login }, (err, user) => __awaiter(this, void 0, void 0, function* () {
-                if (user.length !== 0 && user.login !== userData.login) {
+            yield user_model_1.default.findOne({ login: userData.login }, {}, {}, (err, user) => __awaiter(this, void 0, void 0, function* () {
+                if (user)
                     next(new HttpException_1.default(0, 400, exitCodes_config_1.default.loginWasTaken));
-                }
                 else {
-                    yield user_model_1.default.find({ mail: userData.mail }, (err, user) => __awaiter(this, void 0, void 0, function* () {
-                        if (user.length !== 0 && user.mail !== userData.mail)
+                    yield user_model_1.default.findOne({ mail: userData.mail }, {}, {}, (err, user) => __awaiter(this, void 0, void 0, function* () {
+                        if (user)
                             next(new HttpException_1.default(0, 400, exitCodes_config_1.default.emailWasTaken));
                         else {
-                            yield user_model_1.default.findOneAndUpdate({ login: request.user.login }, userData);
-                            yield response.send(new ResponseSchema_1.default(request.originalUrl, 0, 1, exitCodes_config_1.default.success));
+                            const hashedPassword = yield bcrypt_1.default.hash(userData.password, 10);
+                            const user = yield user_model_1.default.create(Object.assign(Object.assign({}, userData), { password: hashedPassword }));
+                            const tokenData = yield createToken_1.default(user.login);
+                            yield user_model_1.default.updateOne({ login: user.login }, { id: tokenData.uuid });
+                            yield response.setHeader("Set-Cookie", [createCookie_1.default(tokenData)]);
+                            yield response.send(new ResponseSchema_1.default(request.originalUrl, { tokenData }, 1, exitCodes_config_1.default.success));
                         }
                     }));
                 }
@@ -45,7 +51,7 @@ class ChangeMyInfoRouter {
         return this._router;
     }
     _configure() {
-        this._router.post("/", MasterValidator_1.default.validationMiddleware(user_dto_1.ChangeMyInfoDto), this._changeMyInfo);
+        this._router.post("/", MasterValidator_1.default.validationMiddleware(user_dto_1.RegisterDto), this._register);
     }
 }
-module.exports = new ChangeMyInfoRouter().router;
+module.exports = new RegisterRouter().router;
