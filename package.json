@@ -2,9 +2,9 @@
   "name": "v2-server-kvantorium",
   "version": "1.0.0",
   "description": "Just app",
-  "main": "build/app.js",
+  "main": "build/src/app.js",
   "scripts": {
-    "start": "node build/app.js",
+    "start": "node build/src/app.js",
     "test": "set NODE_ENV=test && jest --verbose --forceExit",
     "docker": ""
   },

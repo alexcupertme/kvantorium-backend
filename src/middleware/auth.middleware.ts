@@ -8,10 +8,9 @@ import exitCodes from "../config/exitCodes.config";
 import HttpException from "../models/HttpException";
 
 async function authMiddleware(request: RequestWithUser, response: Response, next: NextFunction) {
-	const cookies = request.cookies;
-	if (cookies && cookies.Authorization) {
+	if (request.body.token != undefined) {
 		try {
-			const verificationResponse = jwt.verify(cookies.Authorization, TokenConfig.config.secretKey) as DataStoredInToken;
+			const verificationResponse = jwt.verify(request.body.token, TokenConfig.config.secretKey) as DataStoredInToken;
 			const id = verificationResponse._id;
 			await User.findOne({ id }, {}, {}, async (err, user) => {
 				if (!user) next(new HttpException(0, 400, exitCodes.invalidToken));

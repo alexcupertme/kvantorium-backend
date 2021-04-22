@@ -38,10 +38,9 @@ const exitCodes_config_1 = __importDefault(require("../config/exitCodes.config")
 const HttpException_1 = __importDefault(require("../models/HttpException"));
 function authMiddleware(request, response, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        const cookies = request.cookies;
-        if (cookies && cookies.Authorization) {
+        if (request.body.token != undefined) {
             try {
-                const verificationResponse = jwt.verify(cookies.Authorization, token_config_1.default.config.secretKey);
+                const verificationResponse = jwt.verify(request.body.token, token_config_1.default.config.secretKey);
                 const id = verificationResponse._id;
                 yield user_model_1.default.findOne({ id }, {}, {}, (err, user) => __awaiter(this, void 0, void 0, function* () {
                     if (!user)
