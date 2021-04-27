@@ -11,7 +11,7 @@ class MasterValidator {
 			let filteredData: Object = plainToClass(type, req.body, { excludeExtraneousValues: true });
 			validate(filteredData).then((errors: ValidationError[]) => {
 				if (errors.length > 0) {
-					next(new HttpException(0, 400, `ERR_${errors[0].property.toUpperCase()}_INCORRECT`));
+					next(new HttpException(0, 200, `ERR_${errors[0].property.toUpperCase()}_INCORRECT`));
 				} else {
 					for (let key in filteredData) {
 						if (filteredData[key] === undefined) {
@@ -19,7 +19,7 @@ class MasterValidator {
 						}
 					}
 					req.body = filteredData;
-					if (Object.keys(filteredData).length === 0) next(new HttpException(0, 400, exitCodes.emptyField));
+					if (Object.keys(filteredData).length === 0) next(new HttpException(0, 200, exitCodes.emptyField));
 					else next();
 				}
 			});
@@ -31,12 +31,12 @@ class MasterValidator {
 			if (blocks !== undefined && blocks instanceof Array && blocks.length !== 0) {
 				blocks.forEach((block) => {
 					if (!(block instanceof Object)) {
-						next(new HttpException(0, 400, exitCodes.emptyField));
+						next(new HttpException(0, 200, exitCodes.emptyField));
 					} else {
 						let filteredData: Object = plainToClass(type, block, { excludeExtraneousValues: true });
 						validate(filteredData).then((errors: ValidationError[]) => {
 							if (errors.length > 0) {
-								next(new HttpException(0, 400, `ERR_${errors[0].property.toUpperCase()}_INCORRECT`));
+								next(new HttpException(0, 200, `ERR_${errors[0].property.toUpperCase()}_INCORRECT`));
 							} else {
 								for (let key in filteredData) {
 									if (filteredData[key] === undefined) {
@@ -45,13 +45,13 @@ class MasterValidator {
 								}
 								req.body = filteredData;
 								console.log(filteredData);
-								if (Object.keys(filteredData).length === 0) next(new HttpException(0, 400, exitCodes.emptyField));
+								if (Object.keys(filteredData).length === 0) next(new HttpException(0, 200, exitCodes.emptyField));
 								else next();
 							}
 						});
 					}
 				});
-			} else next(new HttpException(0, 400, exitCodes.emptyField));
+			} else next(new HttpException(0, 200, exitCodes.emptyField));
 		};
 	}
 }

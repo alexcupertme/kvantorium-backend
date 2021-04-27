@@ -19,10 +19,10 @@ class ChangeMyInfoRouter {
 		const userData = request.body;
 		await User.find({ login: userData.login }, async (err, user: any) => {
 			if (user.length !== 0 && user.login !== userData.login) {
-				next(new HttpException(0, 400, exitCodes.loginWasTaken));
+				next(new HttpException(0, 200, exitCodes.loginWasTaken));
 			} else {
 				await User.find({ mail: userData.mail }, async (err, user: any) => {
-					if (user.length !== 0 && user.mail !== userData.mail) next(new HttpException(0, 400, exitCodes.emailWasTaken));
+					if (user.length !== 0 && user.mail !== userData.mail) next(new HttpException(0, 200, exitCodes.emailWasTaken));
 					else {
 						await User.findOneAndUpdate({ login: request.user.login }, userData);
 						await response.send(new ResponseSchema(request.originalUrl, 0, 1, exitCodes.success));

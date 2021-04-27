@@ -28,7 +28,7 @@ class LoginRouter {
             const userData = request.body;
             yield user_model_1.default.findOne({ login: userData.login }, {}, {}, (err, user) => __awaiter(this, void 0, void 0, function* () {
                 if (!user)
-                    next(new HttpException_1.default(0, 400, exitCodes_config_1.default.userNotFound));
+                    next(new HttpException_1.default(0, 200, exitCodes_config_1.default.userNotFound));
                 else {
                     const isPasswordMatching = yield bcrypt_1.default.compare(userData.password, user.password);
                     if (isPasswordMatching) {
@@ -38,7 +38,7 @@ class LoginRouter {
                         response.send(new ResponseSchema_1.default(request.originalUrl, { tokenData }, 1, exitCodes_config_1.default.success)).end();
                     }
                     else {
-                        next(new HttpException_1.default(0, 400, exitCodes_config_1.default.wrongPassword));
+                        next(new HttpException_1.default(0, 200, exitCodes_config_1.default.wrongPassword));
                     }
                 }
             }));

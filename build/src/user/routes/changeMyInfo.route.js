@@ -25,12 +25,12 @@ class ChangeMyInfoRouter {
             const userData = request.body;
             yield user_model_1.default.find({ login: userData.login }, (err, user) => __awaiter(this, void 0, void 0, function* () {
                 if (user.length !== 0 && user.login !== userData.login) {
-                    next(new HttpException_1.default(0, 400, exitCodes_config_1.default.loginWasTaken));
+                    next(new HttpException_1.default(0, 200, exitCodes_config_1.default.loginWasTaken));
                 }
                 else {
                     yield user_model_1.default.find({ mail: userData.mail }, (err, user) => __awaiter(this, void 0, void 0, function* () {
                         if (user.length !== 0 && user.mail !== userData.mail)
-                            next(new HttpException_1.default(0, 400, exitCodes_config_1.default.emailWasTaken));
+                            next(new HttpException_1.default(0, 200, exitCodes_config_1.default.emailWasTaken));
                         else {
                             yield user_model_1.default.findOneAndUpdate({ login: request.user.login }, userData);
                             yield response.send(new ResponseSchema_1.default(request.originalUrl, 0, 1, exitCodes_config_1.default.success));

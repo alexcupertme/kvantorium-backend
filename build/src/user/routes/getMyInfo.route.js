@@ -26,7 +26,7 @@ class GetMyInfoRouter {
             const uuid = userData._id;
             yield user_model_1.default.findOne({ id: uuid }, (err, user) => __awaiter(this, void 0, void 0, function* () {
                 if (!user)
-                    next(new HttpException_1.default(0, 400, exitCodes_config_1.default.userNotFound));
+                    next(new HttpException_1.default(0, 200, exitCodes_config_1.default.userNotFound));
                 else {
                     let resData = {
                         login: user.login,

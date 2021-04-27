@@ -22,7 +22,7 @@ class LoginRouter {
 	private _login = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
 		const userData: LoginDto = request.body;
 		await User.findOne({ login: userData.login }, {}, {}, async (err, user) => {
-			if (!user) next(new HttpException(0, 400, exitCodes.userNotFound));
+			if (!user) next(new HttpException(0, 200, exitCodes.userNotFound));
 			else {
 				const isPasswordMatching = await bcrypt.compare(userData.password, user.password);
 				if (isPasswordMatching) {
@@ -31,7 +31,7 @@ class LoginRouter {
 					response.setHeader("Set-Cookie", [createCookie(tokenData)]);
 					response.send(new ResponseSchema(request.originalUrl, { tokenData }, 1, exitCodes.success)).end();
 				} else {
-					next(new HttpException(0, 400, exitCodes.wrongPassword));
+					next(new HttpException(0, 200, exitCodes.wrongPassword));
 				}
 			}
 		});

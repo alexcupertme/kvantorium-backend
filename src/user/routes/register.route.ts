@@ -21,10 +21,10 @@ class RegisterRouter {
 	private _register = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
 		const userData: RegisterDto = request.body;
 		await User.findOne({ login: userData.login }, {}, {}, async (err, user) => {
-			if (user) next(new HttpException(0, 400, exitCodes.loginWasTaken));
+			if (user) next(new HttpException(0, 200, exitCodes.loginWasTaken));
 			else {
 				await User.findOne({ mail: userData.mail }, {}, {}, async (err, user) => {
-					if (user) next(new HttpException(0, 400, exitCodes.emailWasTaken));
+					if (user) next(new HttpException(0, 200, exitCodes.emailWasTaken));
 					else {
 						const hashedPassword = await bcrypt.hash(userData.password, 10);
 						const user = await User.create({

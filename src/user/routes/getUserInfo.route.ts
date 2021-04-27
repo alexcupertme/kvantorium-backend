@@ -18,7 +18,7 @@ class GetUserInfoRouter {
 	private _getUserInfo = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
 		const userData = request.body;
 		await User.find(userData, async (err, user: any) => {
-			if (!user) next(new HttpException(0, 400, exitCodes.userNotFound));
+			if (!user) next(new HttpException(0, 200, exitCodes.userNotFound));
 			else {
 				let resData: any = [];
 				user.forEach((element) => {

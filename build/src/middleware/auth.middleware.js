@@ -44,7 +44,7 @@ function authMiddleware(request, response, next) {
                 const id = verificationResponse._id;
                 yield user_model_1.default.findOne({ id }, {}, {}, (err, user) => __awaiter(this, void 0, void 0, function* () {
                     if (!user)
-                        next(new HttpException_1.default(0, 400, exitCodes_config_1.default.invalidToken));
+                        next(new HttpException_1.default(0, 200, exitCodes_config_1.default.invalidToken));
                     else {
                         request.user = user;
                         next();
@@ -52,11 +52,11 @@ function authMiddleware(request, response, next) {
                 }));
             }
             catch (error) {
-                next(new HttpException_1.default(0, 400, exitCodes_config_1.default.invalidToken));
+                next(new HttpException_1.default(0, 200, exitCodes_config_1.default.invalidToken));
             }
         }
         else {
-            next(new HttpException_1.default(0, 400, exitCodes_config_1.default.noToken));
+            next(new HttpException_1.default(0, 200, exitCodes_config_1.default.noToken));
         }
     });
 }

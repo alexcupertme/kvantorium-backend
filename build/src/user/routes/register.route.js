@@ -28,11 +28,11 @@ class RegisterRouter {
             const userData = request.body;
             yield user_model_1.default.findOne({ login: userData.login }, {}, {}, (err, user) => __awaiter(this, void 0, void 0, function* () {
                 if (user)
-                    next(new HttpException_1.default(0, 400, exitCodes_config_1.default.loginWasTaken));
+                    next(new HttpException_1.default(0, 200, exitCodes_config_1.default.loginWasTaken));
                 else {
                     yield user_model_1.default.findOne({ mail: userData.mail }, {}, {}, (err, user) => __awaiter(this, void 0, void 0, function* () {
                         if (user)
-                            next(new HttpException_1.default(0, 400, exitCodes_config_1.default.emailWasTaken));
+                            next(new HttpException_1.default(0, 200, exitCodes_config_1.default.emailWasTaken));
                         else {
                             const hashedPassword = yield bcrypt_1.default.hash(userData.password, 10);
                             const user = yield user_model_1.default.create(Object.assign(Object.assign({}, userData), { password: hashedPassword }));

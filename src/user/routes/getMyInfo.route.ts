@@ -22,7 +22,7 @@ class GetMyInfoRouter {
 		const userData = (await jwt.verify(request.cookies.Authorization, TokenConfig.config.secretKey)) as DataStoredInToken;
 		const uuid = userData._id;
 		await User.findOne({ id: uuid }, async (err, user: any) => {
-			if (!user) next(new HttpException(0, 400, exitCodes.userNotFound));
+			if (!user) next(new HttpException(0, 200, exitCodes.userNotFound));
 			else {
 				let resData: any = {
 					login: user.login,

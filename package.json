@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node build/src/app.js",
     "test": "set NODE_ENV=test && jest --verbose --forceExit",
-    "docker": ""
+    "docker": "docker build --tag vzlomed/hello . --platform linux/arm"
   },
   "author": "",
   "license": "ISC",

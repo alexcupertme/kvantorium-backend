@@ -13,17 +13,17 @@ async function authMiddleware(request: RequestWithUser, response: Response, next
 			const verificationResponse = jwt.verify(request.body.token, TokenConfig.config.secretKey) as DataStoredInToken;
 			const id = verificationResponse._id;
 			await User.findOne({ id }, {}, {}, async (err, user) => {
-				if (!user) next(new HttpException(0, 400, exitCodes.invalidToken));
+				if (!user) next(new HttpException(0, 200, exitCodes.invalidToken));
 				else {
 					request.user = user;
 					next();
 				}
 			});
 		} catch (error) {
-			next(new HttpException(0, 400, exitCodes.invalidToken));
+			next(new HttpException(0, 200, exitCodes.invalidToken));
 		}
 	} else {
-		next(new HttpException(0, 400, exitCodes.noToken));
+		next(new HttpException(0, 200, exitCodes.noToken));
 	}
 }
 

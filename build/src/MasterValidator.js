@@ -13,7 +13,7 @@ class MasterValidator {
             let filteredData = class_transformer_1.plainToClass(type, req.body, { excludeExtraneousValues: true });
             class_validator_1.validate(filteredData).then((errors) => {
                 if (errors.length > 0) {
-                    next(new HttpException_1.default(0, 400, `ERR_${errors[0].property.toUpperCase()}_INCORRECT`));
+                    next(new HttpException_1.default(0, 200, `ERR_${errors[0].property.toUpperCase()}_INCORRECT`));
                 }
                 else {
                     for (let key in filteredData) {
@@ -23,7 +23,7 @@ class MasterValidator {
                     }
                     req.body = filteredData;
                     if (Object.keys(filteredData).length === 0)
-                        next(new HttpException_1.default(0, 400, exitCodes_config_1.default.emptyField));
+                        next(new HttpException_1.default(0, 200, exitCodes_config_1.default.emptyField));
                     else
                         next();
                 }
@@ -36,13 +36,13 @@ class MasterValidator {
             if (blocks !== undefined && blocks instanceof Array && blocks.length !== 0) {
                 blocks.forEach((block) => {
                     if (!(block instanceof Object)) {
-                        next(new HttpException_1.default(0, 400, exitCodes_config_1.default.emptyField));
+                        next(new HttpException_1.default(0, 200, exitCodes_config_1.default.emptyField));
                     }
                     else {
                         let filteredData = class_transformer_1.plainToClass(type, block, { excludeExtraneousValues: true });
                         class_validator_1.validate(filteredData).then((errors) => {
                             if (errors.length > 0) {
-                                next(new HttpException_1.default(0, 400, `ERR_${errors[0].property.toUpperCase()}_INCORRECT`));
+                                next(new HttpException_1.default(0, 200, `ERR_${errors[0].property.toUpperCase()}_INCORRECT`));
                             }
                             else {
                                 for (let key in filteredData) {
@@ -53,7 +53,7 @@ class MasterValidator {
                                 req.body = filteredData;
                                 console.log(filteredData);
                                 if (Object.keys(filteredData).length === 0)
-                                    next(new HttpException_1.default(0, 400, exitCodes_config_1.default.emptyField));
+                                    next(new HttpException_1.default(0, 200, exitCodes_config_1.default.emptyField));
                                 else
                                     next();
                             }
@@ -62,7 +62,7 @@ class MasterValidator {
                 });
             }
             else
-                next(new HttpException_1.default(0, 400, exitCodes_config_1.default.emptyField));
+                next(new HttpException_1.default(0, 200, exitCodes_config_1.default.emptyField));
         };
     }
 }
